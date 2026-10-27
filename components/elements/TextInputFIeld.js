@@ -23,12 +23,12 @@ useEffect(()=>{console.log(inputFilter)},[inputFilter]);
     
         <Col lg={lg} sm={sm ? sm : lastSm ? 2 > 1  && lastSm : ''} >
           <div className='form-group'>
-            <label style={{color: {colorLabel},
+            <label style={{color: colorLabel,
     marginBottom: 16,
     marginTop: 7,
 
     fontWeight: 600}}>{t("Pretraži pojam")}</label>
-          <Input className="input" style={{padding:"8px 20px 6px",fontSize:14,color:"rgba(255, 255, 255, 0.8)",background:"transparent",color:color}}  placeholder={t("Pretraži pomoću ključne riječi")} type="text" p name="pretraga"
+          <Input className="input" style={{padding:"8px 20px 6px",fontSize:14,background:"transparent",color:color}}  placeholder={t("Pretraži pomoću ključne riječi")} type="text" name="pretraga" value={inputFilter.pretraga || ""} aria-label={t("Pretraži pojam")}
                       onChange={(e) => {
                         setFilterValues({ ...filterValues, ...{ [`${e.target.name}`]: e.target.value } });
                         dispatch({ type: `${e.target.name}`, payload: e.target.value });
