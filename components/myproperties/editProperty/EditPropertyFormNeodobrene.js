@@ -24,6 +24,7 @@ const EditPropertyForm = () => {
     const [brojac,postaviBrojac]=useState(0);
     const [fajl,postaviFajl]=useState(null);
     const [fajlovi,postaviFajlove]=useState([]);
+    const [galleryReady, postaviGalleryReady] = useState(false);
 
  const [dropzone,postaviDropzone]=useState(document.getElementById("dropzone"));
 
@@ -39,19 +40,20 @@ const pretvaranjeSlikeFajl=async ()=>{
       })
 }}
       
-const pretvaranjeSlikaFajl= ()=>{
-    let nizzzzz=[];
-    for(let x=0;x<slikeGalerijaUrl.length;x++){
-     fetch(`/slike/${slikeGalerijaUrl[x]}`).then(res => {
-        res.arrayBuffer().then(buf => {
-          let file = new File([buf], slikeGalerijaUrl[x], { type: 'image/jpeg' })
-          nizzzzz.push(file);
-          console.log(file)
-
-        })
-      })};
-console.log(nizzzzz)
-postaviFajlove(nizzzzz)};
+const pretvaranjeSlikaFajl = async () => {
+    const files = await Promise.all(slikeGalerijaUrl.map(async (ime) => {
+        try {
+            const response = await fetch(`/slike/${ime}`);
+            if (!response.ok) return null;
+            const blob = await response.blob();
+            return new File([blob], ime, { type: blob.type || 'image/jpeg' });
+        } catch (error) {
+            console.error('Greska prilikom ucitavanja fotografije:', ime, error);
+            return null;
+        }
+    }));
+    postaviFajlove(files.filter(Boolean));
+};
 useEffect(()=>{
     if(nekretnina!=undefined){
         if(fajl===null){
@@ -77,37 +79,17 @@ console.log(fajl)
   useEffect(()=>{
     console.log(slikeee)
   },[slikeee])
-  const handleChangeStatusSlika = ({ file,meta }, status) => {
-    
-        postaviSliku(file.name);
-        console.log(file.name)
-        postaviFajl([])
-        console.log('aaa')
-
-       }
-let nuz=[];
-       const handleChangeStatusSlike = ({ file,meta }, status) => {
-        if(fajlovi.length!=0){
-            postaviSlike(fajlovi.map(x=>x.name))
-            postaviFajlove([]);
+  const handleChangeStatusSlika = ({ file }, status) => {
+        if (status === 'done') postaviSliku(file.name);
+        else if (status === 'removed') postaviSliku(prev => prev === file.name ? '' : prev);
+    };
+    const handleChangeStatusSlike = ({ file }, status) => {
+        if (status === 'done') {
+            postaviSlike(prev => prev.includes(file.name) ? prev : [...prev, file.name]);
+        } else if (status === 'removed') {
+            postaviSlike(prev => prev.filter(name => name !== file.name));
         }
-        console.log(meta,"status"+status)
-if(status=="done" && !slikeee.includes(file.name)){
-    nuz.push(file.name)
-    postaviSlike([...slikeee,...nuz])}
-    else if(status=="removed"){
-        console.log(file.name)
-        let nizzz=slikeee;
-        console.log(nizzz)
-        let index = nizzz.indexOf(file.name);
-        if (index !== -1) {
-            nizzz.splice(index, 1);
-
-        }
-        postaviSlike([...nizzz]);
-
-    }
-    }
+    };
     /*useEffect(()=>{
         if(slikeee.length!=0){
             postaviFajlove([])
@@ -126,25 +108,27 @@ if(status=="done" && !slikeee.includes(file.name)){
             postaviOpcije({...opcijee,...x.data})});
 
     },[])
-useEffect(()=>{
-    console.log(fajlovi)
-    if(fajlovi.length!=0){
-    console.log(fajlovi)
-    let slidze=fajlovi.map(x=>x.name)
-    console.log(slidze)
-    postaviSlike([...slidze])
-}},[fajlovi])
+// Galerija se inicijalizuje iz API-ja umjesto iz asinhrono ucitanih fajlova.
     useEffect(()=>{
         postaviNekretninu(nekretnine.filter(nekretnina=>nekretnina.id_nekretnina==window.location.pathname.split('/')[window.location.pathname.split('/').length-1])[0]);
     
         console.log(nekretnine)
     },[nekretnine,ruter])
-    useEffect(()=>{
-        if(nekretnina!=null){
-        console.log(nekretnina)
-        axios.post(`/api/galerija`,{id:nekretnina.id_nekretnina}).then(response=>postaviSlikeGalerijaUrl(response.data.map(x=>`${x.slika}`)))
-      
-}},[nekretnina])
+    useEffect(() => {
+        if (!nekretnina) return;
+        postaviSliku(nekretnina.slika || '');
+        postaviGalleryReady(false);
+        axios.post(`/api/galerija`, { id: nekretnina.id_nekretnina })
+            .then(response => {
+                const nazivi = Array.isArray(response.data)
+                    ? response.data.map(x => x.slika).filter(Boolean)
+                    : [];
+                postaviSlikeGalerijaUrl(nazivi);
+                postaviSlike(nazivi);
+                postaviGalleryReady(true);
+            })
+            .catch(error => console.error('Greska prilikom ucitavanja galerije:', error));
+    }, [nekretnina])
 useEffect(()=>{console.log(slikaaa)
 },[slikaaa])
 useEffect(()=>{
@@ -214,6 +198,10 @@ if(nekretnina!=null && fajl!=null){
                
             })}
             onSubmit={(values) => {
+                if (!galleryReady) {
+                    toast.error("Galerija jos nije ucitana. Pokusajte ponovo.");
+                    return;
+                }
                 console.log('slikaa'+slikaaa)
                 values.slika=slikaaa;
                 values.slike=[...slikeee];
@@ -352,7 +340,7 @@ if(nekretnina!=null && fajl!=null){
                             
                          
                             <Col sm='12' className="form-btn">
-                            <Button type="submit" className="btn btn-gradient btn-pill">Sačuvaj</Button>
+                            <Button type="submit" disabled={!galleryReady} className="btn btn-gradient btn-pill">Sačuvaj</Button>
                                 <Button  className="btn btn-dashed btn-pill">Odbij</Button>
                             </Col>
                         </Row>

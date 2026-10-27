@@ -42,8 +42,17 @@ const AddPropertyForm = () => {
   useEffect(()=>{
     console.log(slikeee)
   },[slikeee])
-    const handleChangeStatus = ({ meta, file, allFiles }, status) => { postaviSliku(file.name);
-        if(!slikeee.includes(file.name)){postaviSlike([...slikeee,file.name]) }}
+    const handleChangeStatusSlika = ({ file }, status) => {
+        if (status === 'done') postaviSliku(file.name);
+        else if (status === 'removed') postaviSliku(prev => prev === file.name ? '' : prev);
+    };
+    const handleChangeStatusSlike = ({ file }, status) => {
+        if (status === 'done') {
+            postaviSlike(prev => prev.includes(file.name) ? prev : [...prev, file.name]);
+        } else if (status === 'removed') {
+            postaviSlike(prev => prev.filter(name => name !== file.name));
+        }
+    };
     
     // receives array of files that are done uploading when submit button is clicked
  
@@ -214,7 +223,7 @@ useEffect(()=>{
                                 id="jedna-slika"
                                     multiple={false}
                                     getUploadParams={getUploadParams}
-                                    onChangeStatus={handleChangeStatus}
+                                    onChangeStatus={handleChangeStatusSlika}
                                     submitButtonContent="Otpremi sliku"
                                     accept="image/*,audio/*,video/*"
                                     
@@ -236,7 +245,7 @@ useEffect(()=>{
                                 id="jedna-slika"
                                     multiple={true}
                                     getUploadParams={getUploadParams}
-                                    onChangeStatus={handleChangeStatus}
+                                    onChangeStatus={handleChangeStatusSlike}
                                     submitButtonContent="Otpremi sliku"
                                     accept="image/*,audio/*,video/*"
                                     
