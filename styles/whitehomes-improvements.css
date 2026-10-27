@@ -1,0 +1,135 @@
+/* White Homes frontend improvements - deliberately scoped to public components. */
+.wh-property-card {
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(18, 54, 62, 0.09);
+  background: #fff;
+  box-shadow: 0 10px 28px rgba(25, 45, 52, 0.07);
+  transition: transform .22s ease, box-shadow .22s ease;
+  height: 100%;
+}
+.wh-property-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 42px rgba(25, 45, 52, .13);
+}
+.wh-property-card .property-image {
+  position: relative;
+  overflow: hidden;
+  background: #e9f1ef;
+}
+.wh-property-card .wh-property-photo {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  min-height: 225px;
+  background-color: #e9f1ef;
+  background-position: center;
+  background-size: cover;
+}
+.wh-property-card .property-details { padding: 22px; }
+.wh-property-card .property-details h3 {
+  font-size: clamp(18px, 1.5vw, 23px);
+  line-height: 1.4;
+  font-weight: 700;
+  min-height: 2.6em;
+  margin-top: 8px;
+}
+.wh-property-card .wh-property-price {
+  font-size: 22px;
+  font-weight: 800;
+  color: #006a62;
+  margin: 12px 0;
+  letter-spacing: -.02em;
+}
+.wh-property-card .wh-property-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.65;
+  min-height: 4.9em;
+}
+.wh-property-card .wh-location { font-size: 13px; font-weight: 600; }
+.wh-property-card .wh-location::before { content: "⌖"; padding-right: 7px; color: #006a62; }
+.wh-property-card .property-details ul { margin: 16px 0; }
+.wh-property-card .property-details ul li { margin: 5px 10px 5px 0; }
+.wh-property-card .wh-card-footer {
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  border-top: 1px solid #eff2f1;
+  padding-top: 16px;
+  margin-top: 15px;
+}
+.wh-property-card .wh-card-footer .btn { min-width: 110px; text-align: center; }
+.wh-detail-photo {
+  aspect-ratio: 16 / 10;
+  min-height: 320px;
+  background-color: #e9f1ef;
+  background-position: center;
+  background-size: cover;
+  border-radius: 16px;
+}
+.wh-gallery-thumb {
+  height: 95px;
+  background-color: #e9f1ef;
+  background-position: center;
+  background-size: cover;
+  border-radius: 8px;
+  margin: 5px;
+  overflow: hidden;
+}
+.wh-gallery-placeholder, .wh-property-feedback {
+  background: #f6f9f8;
+  color: #345058;
+  border-radius: 16px;
+  padding: 50px 24px;
+  text-align: center;
+}
+.wh-gallery-placeholder { min-height: 160px; display: grid; place-items: center; }
+.wh-property-feedback { max-width: 850px; min-height: 260px; margin: 30px auto; }
+.wh-property-feedback h1 { font-size: 26px; margin-bottom: 14px; }
+.wh-error-state {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 18px;
+  background: #f7faf9;
+  color: #153837;
+  text-align: center;
+  padding: 30px;
+}
+.wh-error-state h1 { font-size: clamp(24px, 4vw, 38px); margin-bottom: 0; }
+.wh-error-state p { max-width: 520px; margin-bottom: 8px; }
+.wh-contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0 10px;
+}
+.wh-contact-actions .btn { min-width: 150px; text-align: center; }
+.home-section .home-content h1 { line-height: 1.2; letter-spacing: -.02em; }
+.home-search-6 .vertical-search { border-radius: 18px; }
+.wh-property-card a:focus-visible,
+.wh-contact-actions a:focus-visible,
+.wh-error-state button:focus-visible { outline: 3px solid #006a62; outline-offset: 3px; }
+@media (max-width: 767px) {
+  .wh-property-card { border-radius: 14px; }
+  .wh-property-card:hover { transform: none; }
+  .wh-property-card .wh-property-photo { min-height: 205px; aspect-ratio: 16 / 11; }
+  .wh-property-card .property-details { padding: 18px; }
+  .wh-property-card .property-details h3 { min-height: 0; }
+  .wh-property-card .wh-property-description { min-height: 0; }
+  .wh-detail-photo { aspect-ratio: 4 / 3; min-height: 220px; border-radius: 12px; }
+  .wh-gallery-thumb { height: 66px; }
+  .wh-contact-actions { flex-direction: column; align-items: stretch; }
+  .wh-contact-actions .btn { width: 100%; }
+  .home-section .home-content h1 { font-size: clamp(25px, 7vw, 34px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wh-property-card { transition: none; }
+  .wh-property-card:hover { transform: none; }
+}
