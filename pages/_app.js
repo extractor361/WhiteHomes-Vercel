@@ -3,6 +3,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "photoswipe/dist/photoswipe.css";
 import { useRouter } from "next/router";
 import "./styles.css";
+import "../styles/whitehomes-improvements.css";
 import { appWithTranslation } from "next-i18next";
 import { useEffect } from "react";
 import "react-toastify/dist/ReactToastify.css";
