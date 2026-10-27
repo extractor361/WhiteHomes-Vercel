@@ -36,7 +36,7 @@ const TopTitle = ({ singleData }) => {
                 </div>
               </li> : null }
               
-              {singleData.povrsina ? <li>
+              {singleData?.povrsina ? <li>
                 <div>
                   <img src="/assets/images/svg/icon/square-ruler-tool.svg" className="img-fluid ruler-tool" alt="" />
                   <span>{singleData.povrsina} m<sup>2</sup></span>
@@ -44,6 +44,10 @@ const TopTitle = ({ singleData }) => {
               </li> : null}
              
             </ul>
+            <div className="wh-contact-actions">
+              <a className="btn btn-gradient btn-pill" href="tel:+38267201391">{t("Pozovi")}</a>
+              <a className="btn btn-dashed btn-pill" href={`mailto:office@whitehomes.com?subject=${encodeURIComponent(`Upit za nekretninu #${singleData?.id_nekretnina || ""}`)}`}>{t("Pošalji upit")}</a>
+            </div>
             <div className="share-buttons">
               <div className="d-inline-block">
                 <a className="btn btn-gradient btn-pill">
@@ -84,7 +88,7 @@ const TopTitle = ({ singleData }) => {
           <div className="right-single">
             {/*<ReviewStarr rating={4} />*/}
             <h2 className="price">
-            {singleData.cijena!=0 ? "€"+singleData.cijena : <h2 style={{color:"orange"}}>{t("Na upit")}</h2>} <span>{t("Cijena")}</span>
+            {singleData?.cijena!=0 ? "€"+singleData.cijena : <h2 style={{color:"orange"}}>{t("Na upit")}</h2>} <span>{t("Cijena")}</span>
             </h2>
            
           </div>
