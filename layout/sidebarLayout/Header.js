@@ -18,6 +18,9 @@ const Header = ({ grid, mapView, mapModal, gridBar, tabHeader, title, AdvancedSe
   const { sortirajPrema, statusNekretnine } = useSelector((state) => state.inputsReducer);
   const mobileSize = useMobileSize("AdvancedSearch");
   const dispatch = useDispatch();
+  const count = Number(grid?.productCount) || 0;
+  const start = count ? 6 * ((grid?.toPage || 1) - 1) + 1 : 0;
+  const end = Math.min(6 * (grid?.toPage || 1), count);
   return (
     <div className="filter-panel">
       <div className="top-panel">
@@ -41,7 +44,7 @@ const Header = ({ grid, mapView, mapModal, gridBar, tabHeader, title, AdvancedSe
             <span className="show-result">
               {t("Prikazivanje")}{" "}
               <span>
-                {(title === "Agency Listing" ? 9 : 6) * (grid?.toPage || 1) - (title === "Agency Listing" ? 9 : 6)}-{(title === "Agency Listing" ? 9 : 6) * (grid?.toPage || 1) > productCount ? productCount : (title === "Agency Listing" ? 9 : 6) * (grid?.toPage || 1)}  {productCount}
+                {start}–{end} / {count}
               </span>{" "}
                {t("nekretnina")}
             </span>
