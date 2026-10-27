@@ -7,7 +7,6 @@
 import { Link } from "next-translate-routes";
 import React, { useEffect, useState } from "react";
 import { Button, Col, Row } from "reactstrap";
-import { getData } from "../../../../utils/getData";
 import { DropdownInputFields } from "../../../elements/DropdownInputFields";
 import RangeInputFields from "../../../elements/RangeInputFields";
 import { useSelector } from "react-redux";
@@ -22,29 +21,12 @@ const InputForm = ({ label, lg, sm, lastSm }) => {
   const [filterValues, setFilterValues] = useState({});
   const input=useSelector(state=>state.inputsReducer)
 const dispatch=useDispatch();
-  const [value, setValue] = useState();
-
-  useEffect(() => {
-    console.log(input)
-    getData(`${process.env.API_URL}/property`)
-      .then((res) => {
-        console.log(res);
-        setValue(
-          res.data &&
-            res.data !== undefined &&
-            Object.keys(res.data)
-              .map((key) => [res.data[key]])
-              .flat(2)
-              .filter((arrData) => Array.isArray(arrData.img)),
-        );
-      })
-      .catch((error) => console.log("Error", error));
-  }, []);
+  // Filter data is already available in Redux; avoid a redundant API call.
 
 
-  useEffect( ()=>console.log("vrijednost je"+value),[value]);
 
-  useEffect(()=>{if(input.status==t("Izdavanje")){dispatch({type:"cijena",payload:[100,5000]});
+
+useEffect(()=>{if(input.status==t("Izdavanje")){dispatch({type:"cijena",payload:[100,5000]});
   console.log(input)}
   else{dispatch({type:"cijena",payload:[100,200000]})}
     
