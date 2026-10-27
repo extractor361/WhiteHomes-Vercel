@@ -26,8 +26,8 @@ const HomeBannerSection = () => {
                     {/* home main slider start*/}
                     <NoSsr>
                       <Slider className="home-slider-1 arrow-light slick-shadow" {...homeSlider1}>
-                        <HomeSliderContent path="/nekretnine/objavi-nekretninu" title={ SubmitProperty}  mainTitle="Oglasite vašu nekretninu potpuno besplatno" />
-                        <HomeSliderContent path="/nekretnine/sve-nekretnine"  title={All}   mainTitle="Sve nekretnine na jednom mestu" />
+                        <HomeSliderContent path="/nekretnine/sve-nekretnine" title={All} mainTitle="Pronađite svoj idealan dom u Crnoj Gori" />
+                        <HomeSliderContent path="/nekretnine/objavi-nekretninu" title={SubmitProperty} mainTitle="Oglasite svoju nekretninu besplatno" />
                       </Slider>
                     </NoSsr>
                     {/* home main slider end*/}
