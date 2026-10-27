@@ -21,7 +21,7 @@ if(inputFilter.tip==t("Zemljište")){
   return (
     <>
     
-  {InputForm.slice(`${start && start}`, `${end && end}`).filter((input)=>{if ( input.name==t("spavaceSobe")) {
+  {InputForm.slice(`${start && start}`, `${end && end}`).filter((input)=>{if ( input.name==="spavaceSobe") {
     return false; // skip
   }
   return true}).map((value, i) => (
