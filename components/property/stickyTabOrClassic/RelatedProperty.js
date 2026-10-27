@@ -21,24 +21,21 @@ const [nekretnina,postaviNekretninu]=useState();
 useEffect(()=>{
   postaviQuery(router.query.nekretnina);
 
-},[])
-const kreirajRelated=()=>{
-  let niz=[];
-  let podniz=Array.from(new Set(nekretnine.filter(x=>{return(x.status==nekretnina.status && x.tip==nekretnina.tip && x.grad==nekretnina.grad)})));
-  if(podniz.length<3){
-     podniz=Array.from(new Set([...podniz,...nekretnine.filter(x=>{return(x.status==nekretnina.status && x.tip==nekretnina.tip)})]));
-    if(podniz.length<3){
-      podniz=Array.from(new Set([...podniz,...nekretnine.filter(x=>{return(x.tip==nekretnina.tip)})]));
-      
-
-    }
-  }
-  const rezultat=podniz.slice(0,3);
-  
-
-  postaviRelated(rezultat)
-
-}
+},[router.query.nekretnina])
+const kreirajRelated = () => {
+  if (!nekretnina) return;
+  const alternatives = nekretnine
+    .filter(item => item && item.id_nekretnina !== nekretnina.id_nekretnina)
+    .map(item => ({
+      ...item,
+      similarity: Number(item.grad === nekretnina.grad) * 3 +
+        Number(item.tip === nekretnina.tip) * 2 +
+        Number(item.status === nekretnina.status),
+    }))
+    .sort((a, b) => b.similarity - a.similarity)
+    .slice(0, 3);
+  postaviRelated(alternatives);
+};
 useEffect(()=>{if(nekretnine.length!=0 && query!=null){postaviNekretninu(nekretnine.filter(x=>x.id_nekretnina==query)[0])}},[nekretnine,query])
 useEffect(()=>{
   if(nekretnina!=null){console.log(nekretnina);
@@ -54,9 +51,9 @@ useEffect(()=>{
         <Row className=" ratio_55">
           <Col sm="12" className=" property-grid-3">
             <Row className="property-2  column-sm zoom-gallery property-label property-grid">
-              {related!=0 &&
+              {related.length > 0 &&
                 related.map((data, i) => (
-                  <Col xl="4" md="6" className="wow fadeInUp" key={i}>
+                  <Col xl="4" md="6" className="wow fadeInUp" key={data.id_nekretnina}>
                     <PropertyBox data={data} />
                   </Col>
                 ))}

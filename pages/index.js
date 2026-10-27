@@ -44,6 +44,13 @@ const Naslovna = () => {
         >
           {t("Odaberite uslugu koja vam je potrebna!")}
         </h1>
+        <p className="wh-home-subtitle">
+          {t("Prodaja i izdavanje nekretnina u Crnoj Gori na jednom mjestu.")}
+        </p>
+        <div className="wh-home-actions">
+          <Link href="/nekretnine/sve-nekretnine" className="btn btn-gradient btn-pill">{t("Sve nekretnine")}</Link>
+          <Link href="/nekretnine/objavi-nekretninu" className="btn btn-dashed btn-pill">{t("Objavi nekretninu")}</Link>
+        </div>
         <Container className="card-container">
           <Row className="red">
             <Col className="kartica" lg={4} xs={12}>

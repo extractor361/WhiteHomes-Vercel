@@ -15,22 +15,25 @@ const Header = ({ grid, mapView, mapModal, gridBar, tabHeader, title, AdvancedSe
 
   const [advancedSearchOpen, setAdvancedSearchOpen] = useState(false);
   const [mapModalOpen, setMapModalOpen] = useState(false);
-  const { sortirajPrema, statusNekretnine } = useSelector((state) => state.inputsReducer);
+  const { sortirajPrema, status } = useSelector((state) => state.inputsReducer);
   const mobileSize = useMobileSize("AdvancedSearch");
   const dispatch = useDispatch();
+  const count = Number(grid?.productCount) || 0;
+  const start = count ? 6 * ((grid?.toPage || 1) - 1) + 1 : 0;
+  const end = Math.min(6 * (grid?.toPage || 1), count);
   return (
     <div className="filter-panel">
       <div className="top-panel">
         {tabHeader ? (
           <div className="filters respon-filter-content filter-button-group">
             <ul>
-              <li className={statusNekretnine === "Status Nekretnine" || !statusNekretnine?.length ? "active" : ""} onClick={() => dispatch({ type: "statusNekretnine", payload: "Status Nekretnine" })}>
+              <li className={status === t("Status Nekretnine") || !status?.length ? "active" : ""} onClick={() => dispatch({ type: "status", payload: t("Status Nekretnine") })}>
                 <span>{t("Sve nekretnine")}</span>
               </li>
-              <li className={statusNekretnine === "Prodaja" ? "active" : ""} onClick={() => dispatch({ type: "statusNekretnine", payload: "Prodaja" })}>
+              <li className={status === t("Prodaja") ? "active" : ""} onClick={() => dispatch({ type: "status", payload: t("Prodaja") })}>
                 <span>{t("Prodaja")}</span>
               </li>
-              <li className={statusNekretnine === "Iznajmljivanje" ? "active" : ""} onClick={() => dispatch({ type: "statusNekretnine", payload: "Iznajmljivanje" })}>
+              <li className={status === t("Izdavanje") ? "active" : ""} onClick={() => dispatch({ type: "status", payload: t("Izdavanje") })}>
                 <span>{t("Iznajmljivanje")}</span>
               </li>
             </ul>
@@ -41,7 +44,7 @@ const Header = ({ grid, mapView, mapModal, gridBar, tabHeader, title, AdvancedSe
             <span className="show-result">
               {t("Prikazivanje")}{" "}
               <span>
-                {(title === "Agency Listing" ? 9 : 6) * (grid?.toPage || 1) - (title === "Agency Listing" ? 9 : 6)}-{(title === "Agency Listing" ? 9 : 6) * (grid?.toPage || 1) > productCount ? productCount : (title === "Agency Listing" ? 9 : 6) * (grid?.toPage || 1)}  {productCount}
+                {start}–{end} / {count}
               </span>{" "}
                {t("nekretnina")}
             </span>

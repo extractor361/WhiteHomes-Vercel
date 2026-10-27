@@ -22,8 +22,8 @@ const SalePropertySection = ({ value, range }) => {
           </div>
           <Row className='property-2 column-space'>
             {value &&
-              value.slice(0,6).filter(data=>data.status=="Izdavanje").map((data, i) => (
-                <Col xl='4' md='6' className='wow fadeInUp' key={i}>
+              value.filter(data=>data.status==="Izdavanje").slice(0,6).map((data, i) => (
+                <Col xl='4' md='6' className='wow fadeInUp' key={data.id_nekretnina}>
                   <PropertyBoxOne data={data} />
                 </Col>
               ))}

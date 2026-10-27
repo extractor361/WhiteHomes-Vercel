@@ -5,7 +5,7 @@
  * @param props - {
  * @returns A React component.
  */
-import React, { useEffect } from "react";
+import React from "react";
 import { Col, Container, Row } from "reactstrap";
 import TopTitle from "../stickyTabOrClassic/TopTitle";
 import Sidebar from "../../../layout/sidebarLayout/Sidebar";
@@ -19,7 +19,6 @@ import SinglePropertySection from "./SinglePropertySection";
 import { useSelector } from "react-redux";
 const BodyContent = (props) => {
   let nekretnine=useSelector(state=>state.nekretnine.niz)
-  useEffect(()=>{console.log(nekretnine)},[nekretnine])
   return (
     <>
       {props.children}
@@ -32,7 +31,7 @@ const BodyContent = (props) => {
             <Col xl="9" lg="8">
               <div className="description-section tab-description">
                 {props.imgSection && <ImageSection />}
-                <GalleryBox slike={props.slike} />
+                <GalleryBox naslovnaSlika={props.singleData?.slika} />
                 <SinglePropertySection />
               </div>
             </Col>

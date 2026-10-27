@@ -23,7 +23,7 @@ const ContactInfo = () => {
             <img src='/assets/images/testimonial/3.png' className='img-50' alt='' />
             <div className='media-body ms-2'>
               <h6>Maja</h6>
-              <p>office@whitehomes.com</p>
+              <p><a href="mailto:office@whitehomes.com">office@whitehomes.com</a></p>
             </div>
           </div>
         </div>
@@ -35,7 +35,7 @@ const ContactInfo = () => {
           </li>
           <li>
             <PhoneCall className='me-2' />
-            +382/67/201-391
+            <a href="tel:+38267201391">+382/67/201-391</a>
           </li>
         </ul>
       </div>
