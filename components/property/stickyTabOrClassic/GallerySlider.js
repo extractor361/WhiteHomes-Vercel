@@ -32,7 +32,24 @@ const GallerySlider = ({ naslovnaSlika }) => {
     return () => { active = false; };
   }, [id]);
 
-  const gallery = images.length ? images : naslovnaSlika ? [naslovnaSlika] : [];
+  // The image chosen as the property's cover is always the first slide.
+  // The cover may be stored both in the listing and in the gallery list.
+  const imageKey = (name) => String(name ?? "")
+    .trim()
+    .split(/[?#]/)[0]
+    .replace(/^https?:\/\/[^/]+/i, "")
+    .replace(/^\/+/, "")
+    .replace(/^slike\//i, "");
+
+  const seen = new Set();
+  const gallery = [naslovnaSlika, ...images].filter((name) => {
+    if (typeof name !== "string" || !name.trim()) return false;
+    const key = imageKey(name);
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
   if (loading) return <div className="wh-gallery-placeholder">Učitavanje fotografija...</div>;
   if (!gallery.length) return <div className="wh-gallery-placeholder">Fotografije nijesu dostupne.</div>;
 
