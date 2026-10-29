@@ -10,6 +10,14 @@ import { useTranslation } from "next-i18next";
 const SalePropertySection = ({ value, range }) => {
   const { t } = useTranslation("common");
 
+  // Show newest rental listings first; the backend does not guarantee row order.
+  const latestRentals = Array.isArray(value)
+    ? value
+        .filter(data => data && data.status === "Izdavanje")
+        .sort((a, b) => Number(b.id_nekretnina) - Number(a.id_nekretnina))
+        .slice(0, 6)
+    : [];
+
   return (
     <section className='property-section'>
     <Container>
@@ -21,8 +29,7 @@ const SalePropertySection = ({ value, range }) => {
             <hr />
           </div>
           <Row className='property-2 column-space'>
-            {value &&
-              value.filter(data=>data.status==="Izdavanje").slice(0,6).map((data, i) => (
+            {latestRentals.map((data) => (
                 <Col xl='4' md='6' className='wow fadeInUp' key={data.id_nekretnina}>
                   <PropertyBoxOne data={data} />
                 </Col>
