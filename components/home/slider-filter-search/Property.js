@@ -10,6 +10,12 @@ import { useTranslation } from "next-i18next";
 const PropertySection = ({ value, range }) => {
   const { t } = useTranslation("common");
 
+  // The API does not guarantee the listing order. The highest listing ID
+  // is the most recently created listing (editing does not change its ID).
+  const latestProperties = Array.isArray(value)
+    ? [...value].sort((a, b) => Number(b.id_nekretnina) - Number(a.id_nekretnina)).slice(0, 6)
+    : [];
+
   return (
     <section className='property-section'>
       <Container>
@@ -21,8 +27,7 @@ const PropertySection = ({ value, range }) => {
               <hr />
             </div>
             <Row className='property-2 column-space'>
-              {value &&
-                value.slice(0,6).map((data, i) => (
+              {latestProperties.map((data) => (
                   <Col xl='4' md='6' className='wow fadeInUp' key={data.id_nekretnina}>
                     <PropertyBox data={data} />
                   </Col>
